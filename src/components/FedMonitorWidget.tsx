@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
-import { TrendingDown } from 'lucide-react';
+import { TrendingDown, AlertCircle } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
