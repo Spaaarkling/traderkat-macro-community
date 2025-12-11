@@ -37,7 +37,7 @@ interface MacroFlowDashboardProps {
 
 export default function MacroFlowDashboard({ hoveredScenario, setHoveredScenario }: MacroFlowDashboardProps) {
   const { currentContext, upcomingEvent } = macroFlowData;
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   return (
     <div className="w-full max-w-5xl flex flex-col md:flex-row items-center md:items-start justify-center gap-6 relative pt-4 pb-8">
@@ -109,9 +109,6 @@ export default function MacroFlowDashboard({ hoveredScenario, setHoveredScenario
               const isHovered = hoveredScenario === scenario.id;
               const isDimmed = hoveredScenario !== null && hoveredScenario !== scenario.id;
               
-              const parts = scenario.id.split('-');
-              const tKey = (parts[0] + parts[1].toUpperCase()) as 'caseA' | 'caseB' | 'caseC';
-
               return (
                   <motion.div 
                       key={scenario.id}
@@ -139,24 +136,48 @@ export default function MacroFlowDashboard({ hoveredScenario, setHoveredScenario
                           sentimentColors[scenario.sentiment] || 'bg-slate-800 border-slate-700',
                           isHovered ? "shadow-2xl scale-[1.02]" : "bg-slate-800/50"
                       )}>
+                          {/* Header */}
                           <div className="flex items-center justify-between mb-3">
-                              <span className="font-mono text-xs font-bold uppercase opacity-80">{t(`dashboard.data.${tKey}.condition`)}</span>
+                              <span className="font-mono text-xs font-bold uppercase opacity-80">{scenario.condition}</span>
                               <span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-900/30 border border-white/10">
                                   Case {String.fromCharCode(65 + index)}
                               </span>
                           </div>
-                          <div className="font-bold text-xl mb-1">{t(`dashboard.data.${tKey}.outcome`)}</div>
-                          <div className="text-sm opacity-90 mb-4 flex items-center gap-2">
-                              <Activity size={14} />
-                              {t(`dashboard.data.${tKey}.target`)}
+
+                          {/* Summary Headline */}
+                          <div className="font-bold text-lg mb-4 leading-tight min-h-[3rem]">
+                              {scenario.analysis.summary[language]}
                           </div>
 
-                          {scenario.logic && (
-                              <div className="mt-auto pt-4 border-t border-white/10 flex gap-3 text-sm text-slate-300">
-                                  <Lightbulb size={18} className="text-yellow-400 shrink-0 mt-0.5" />
-                                  <p className="text-xs leading-relaxed">{t(`dashboard.data.${tKey}.logic`)}</p>
+                          {/* Logic Chain */}
+                          <div className="mb-6 space-y-2">
+                              <div className="text-[10px] uppercase tracking-wider opacity-60 font-bold flex items-center gap-1.5">
+                                  <Activity size={10} /> Logic Chain
                               </div>
-                          )}
+                              <div className="flex flex-wrap items-center gap-2 text-xs opacity-90">
+                                  {scenario.analysis.logicChain[language].map((step, i) => (
+                                      <div key={i} className="flex items-center gap-2">
+                                          {i > 0 && <ArrowRight size={10} className="opacity-50" />}
+                                          <span className="bg-slate-900/30 px-2 py-1 rounded border border-white/5 whitespace-nowrap shadow-sm">
+                                              {step}
+                                          </span>
+                                      </div>
+                                  ))}
+                              </div>
+                          </div>
+
+                          {/* Deep Dive / Analyst View */}
+                          <div className="mt-auto pt-4 border-t border-white/10">
+                              <div className="flex items-center gap-2 mb-2">
+                                  <Lightbulb size={14} className="text-yellow-400" />
+                                  <span className="text-xs font-bold text-yellow-400/90">
+                                      {language === 'ko' ? '친절한 해설' : "Analyst's Note"}
+                                  </span>
+                              </div>
+                              <p className="text-xs leading-relaxed opacity-80 font-medium">
+                                  {scenario.analysis.deepDive[language]}
+                              </p>
+                          </div>
                       </div>
                   </motion.div>
               );
