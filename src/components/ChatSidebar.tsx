@@ -34,13 +34,13 @@ export default function ChatSidebar({ className, onClose }: ChatSidebarProps) {
   const { t } = useLanguage();
 
   return (
-    <aside className={cn("flex flex-col h-full bg-slate-800 border-l border-slate-700 shadow-xl", className)}>
+    <aside className={cn("flex flex-col h-full bg-transparent border-0 shadow-xl", className)}>
       {/* Header */}
-      <div className="p-4 border-b border-slate-700 bg-slate-800/95 backdrop-blur flex justify-between items-center sticky top-0 z-10">
+      <div className="p-4 border-b border-slate-800 bg-black/90 backdrop-blur flex justify-between items-center sticky top-0 z-10">
         <div>
-          <h2 className="font-bold text-white text-sm tracking-wide">{t('chat.title')}</h2>
+          <h2 className="font-bold text-cyan-500 text-sm tracking-widest uppercase font-mono">{t('chat.title')}</h2>
           <div className="flex items-center gap-1.5 mt-1">
-            <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
+            <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_5px_#10b981]"></span>
             <span className="text-xs text-slate-400 font-mono">1,243 {t('chat.online')}</span>
           </div>
         </div>
@@ -62,8 +62,8 @@ export default function ChatSidebar({ className, onClose }: ChatSidebarProps) {
               {msg.initials}
             </div>
             <div className="flex flex-col max-w-[80%]">
-              <span className="text-[10px] text-slate-400 font-bold mb-0.5 ml-1">{msg.user}</span>
-              <div className="bg-slate-700/50 text-slate-200 text-sm px-3 py-2 rounded-2xl rounded-tl-none border border-slate-700/50">
+              <span className="text-[10px] text-slate-500 font-bold mb-0.5 ml-1 font-mono">{msg.user}</span>
+              <div className="bg-slate-900/80 text-slate-300 text-xs font-mono px-3 py-2 rounded-sm border border-slate-800 shadow-sm">
                 {msg.text}
               </div>
             </div>
@@ -72,14 +72,14 @@ export default function ChatSidebar({ className, onClose }: ChatSidebarProps) {
       </div>
 
       {/* Input Area */}
-      <div className="p-4 border-t border-slate-700 bg-slate-800 sticky bottom-0 z-10">
+      <div className="p-4 border-t border-slate-800 bg-black/90 sticky bottom-0 z-10">
         <div className="relative">
           <input 
             type="text" 
             placeholder={t('chat.placeholder')}
-            className="w-full bg-slate-900/50 border border-slate-600 rounded-full py-2.5 pl-4 pr-12 text-sm text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all placeholder:text-slate-500"
+            className="w-full bg-black border border-slate-700 rounded-sm py-2 pl-4 pr-12 text-xs font-mono text-white focus:outline-none focus:border-cyan-500 transition-all placeholder:text-slate-600"
           />
-          <button className="absolute right-1.5 top-1.5 p-1.5 bg-blue-500 hover:bg-blue-600 text-white rounded-full transition-colors shadow-lg">
+          <button className="absolute right-1.5 top-1.5 p-1 bg-cyan-900/50 hover:bg-cyan-800 text-cyan-400 rounded-sm border border-cyan-700 transition-colors">
             <Send size={14} />
           </button>
         </div>

@@ -16,10 +16,14 @@ interface RightPanelProps {
 
 export default function RightPanel({ probability, onClose, className }: RightPanelProps) {
   return (
-    <aside className={cn("flex flex-col h-full bg-slate-900 border-l border-slate-700 shadow-2xl z-40", className)}>
+    <aside className={cn("flex flex-col h-full bg-black/80 backdrop-blur-xl border-l border-slate-800 shadow-2xl z-40", className)}>
       
       {/* Top Section: Fed Monitor & Prediction */}
-      <div className="p-4 bg-slate-800/50 backdrop-blur-md border-b border-slate-700 shrink-0 flex flex-col gap-2 overflow-y-auto max-h-[60%]">
+      <div className="p-4 bg-transparent border-b border-slate-800 shrink-0 flex flex-col gap-2 overflow-y-auto max-h-[60%] relative">
+         {/* HUD Corner Accents */}
+         <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-cyan-500"></div>
+         <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-cyan-500"></div>
+
          {/* Fed Monitor */}
          <div className="w-full flex justify-center">
             <FedMonitorWidget probability={probability} />
@@ -32,7 +36,7 @@ export default function RightPanel({ probability, onClose, className }: RightPan
       </div>
 
       {/* Middle Divider */}
-      <div className="h-[1px] bg-slate-700 w-full shrink-0 shadow-sm" />
+      <div className="h-[1px] bg-slate-800 w-full shrink-0 shadow-sm" />
 
       {/* Bottom Section: Chat */}
       {/* We pass 'flex-1' via className to ChatSidebar to make it fill remaining space */}

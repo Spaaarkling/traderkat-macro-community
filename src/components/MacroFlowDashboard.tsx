@@ -17,16 +17,16 @@ function cn(...inputs: ClassValue[]) {
 }
 
 const sentimentColors = {
-  Bullish: 'text-emerald-500 border-emerald-500 bg-emerald-500/10',
-  Bearish: 'text-rose-500 border-rose-500 bg-rose-500/10',
-  Neutral: 'text-slate-400 border-slate-400 bg-slate-400/10',
-  Fear: 'text-orange-500 border-orange-500 bg-orange-500/10',
+  Bullish: 'text-emerald-400 border-emerald-500 bg-emerald-950/40 hover:bg-emerald-900/60 shadow-[0_0_10px_rgba(52,211,153,0.1)]',
+  Bearish: 'text-rose-500 border-rose-500 bg-rose-950/40 hover:bg-rose-900/60 shadow-[0_0_10px_rgba(244,63,94,0.1)]',
+  Neutral: 'text-slate-400 border-slate-600 bg-slate-900/60 hover:bg-slate-800',
+  Fear: 'text-orange-500 border-orange-500 bg-orange-950/40 hover:bg-orange-900/60 shadow-[0_0_10px_rgba(249,115,22,0.1)]',
 };
 
 const sentimentBorder = {
   Bullish: 'border-emerald-500',
   Bearish: 'border-rose-500',
-  Neutral: 'border-slate-400',
+  Neutral: 'border-slate-600',
   Fear: 'border-orange-500',
 };
 
@@ -49,10 +49,9 @@ export default function MacroFlowDashboard({ hoveredScenario, setHoveredScenario
            initial={{ scale: 0.9, opacity: 0 }}
            animate={{ scale: 1, opacity: 1 }}
            className={cn(
-             "relative p-4 rounded-xl border-2 bg-slate-800 shadow-xl w-full text-center",
+             "relative p-6 rounded-lg border tech-card shadow-2xl w-full text-center",
              // @ts-ignore
-             sentimentBorder[currentContext.sentiment] || 'border-slate-700',
-             "shadow-[0_0_30px_rgba(244,63,94,0.1)]"
+             sentimentBorder[currentContext.sentiment] || 'border-slate-800',
            )}
          >
             <div className="flex justify-center mb-2">
@@ -75,20 +74,20 @@ export default function MacroFlowDashboard({ hoveredScenario, setHoveredScenario
          
          {/* Upcoming Event */}
          <div className="w-full max-w-[450px] relative z-20">
-             <div className="bg-slate-800 border-2 border-blue-500 rounded-xl p-4 flex items-center gap-4 shadow-2xl cursor-default group hover:shadow-blue-500/20 transition-all">
-                <div className="p-3 bg-blue-500/10 rounded-lg group-hover:scale-110 transition-transform">
-                    <Calendar className="text-blue-500" size={24} />
+             <div className="tech-card border border-cyan-500/50 rounded-lg p-6 flex items-center gap-5 shadow-[0_0_20px_rgba(6,182,212,0.1)] cursor-default group hover:border-cyan-400 transition-all">
+                <div className="p-3 bg-cyan-500/10 rounded-lg group-hover:scale-110 transition-transform border border-cyan-500/30">
+                    <Calendar className="text-cyan-400" size={24} />
                 </div>
                 <div>
-                    <div className="text-[10px] text-blue-400 font-bold uppercase tracking-wide flex items-center gap-2">
+                    <div className="text-[10px] text-cyan-400 font-bold uppercase tracking-wide flex items-center gap-2 font-mono">
                         {t('dashboard.upcoming')}
-                        <span className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-pulse"></span>
+                        <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-pulse shadow-[0_0_5px_cyan]"></span>
                     </div>
-                    <div className="text-lg font-bold text-white">{t('dashboard.data.upcoming.name')}</div>
-                    <div className="text-xs text-slate-400 flex items-center gap-3 mt-0.5">
+                    <div className="text-lg font-bold text-white font-mono tracking-tight">{t('dashboard.data.upcoming.name')}</div>
+                    <div className="text-xs text-slate-400 flex items-center gap-3 mt-0.5 font-mono">
                         <span className="flex items-center gap-1"><Clock size={10}/> {upcomingEvent.date}</span>
                         <span className="w-1 h-1 bg-slate-600 rounded-full"></span>
-                        <span>{t('dashboard.consensus')}: <span className="text-white font-mono">{t('dashboard.data.upcoming.consensus')}</span></span>
+                        <span>{t('dashboard.consensus')}: <span className="text-cyan-300 font-bold">{t('dashboard.data.upcoming.consensus')}</span></span>
                     </div>
                 </div>
              </div>
@@ -96,10 +95,13 @@ export default function MacroFlowDashboard({ hoveredScenario, setHoveredScenario
 
          {/* Connector SVG */}
          <div className="w-full h-8 relative hidden md:block z-0 pointer-events-none -mt-1">
-            <svg className="absolute top-0 left-0 w-full h-full" viewBox="0 0 800 32" preserveAspectRatio="none">
-                <path d="M400 0 C 400 16, 133 16, 133 32" stroke="#334155" strokeWidth="2" fill="none" />
-                <path d="M400 0 V 32" stroke="#334155" strokeWidth="2" fill="none" />
-                <path d="M400 0 C 400 16, 666 16, 666 32" stroke="#334155" strokeWidth="2" fill="none" />
+            <svg className="absolute top-0 left-0 w-full h-full drop-shadow-[0_0_5px_rgba(6,182,212,0.5)]" viewBox="0 0 800 32" preserveAspectRatio="none">
+                <path d="M400 0 C 400 16, 133 16, 133 32" stroke="#06b6d4" strokeOpacity="0.6" strokeWidth="1" fill="none" className="animate-pulse" />
+                <path d="M400 0 V 32" stroke="#06b6d4" strokeOpacity="0.6" strokeWidth="1" fill="none" className="animate-pulse" />
+                <path d="M400 0 C 400 16, 666 16, 666 32" stroke="#06b6d4" strokeOpacity="0.6" strokeWidth="1" fill="none" className="animate-pulse" />
+                
+                {/* Active Dots */}
+                <circle cx="400" cy="0" r="2" fill="#22d3ee" className="animate-ping" />
             </svg>
          </div>
 
@@ -120,27 +122,27 @@ export default function MacroFlowDashboard({ hoveredScenario, setHoveredScenario
                       )}
                   >
                       {/* Top Connector Dot (Desktop) */}
-                      <div className={cn("hidden md:block absolute top-[-16px] left-1/2 -translate-x-1/2 w-3 h-3 rounded-full border-4 border-slate-900 z-20", 
+                      <div className={cn("hidden md:block absolute top-[-16px] left-1/2 -translate-x-1/2 w-2 h-2 rounded-full border border-slate-900 z-20 shadow-[0_0_8px_currentColor]", 
                           // @ts-ignore
-                          scenario.sentiment === 'Bullish' ? 'bg-emerald-500' : 
+                          scenario.sentiment === 'Bullish' ? 'bg-emerald-400 text-emerald-400' : 
                           // @ts-ignore
-                          scenario.sentiment === 'Bearish' ? 'bg-rose-500' : 'bg-slate-400'
+                          scenario.sentiment === 'Bearish' ? 'bg-rose-500 text-rose-500' : 'bg-slate-400 text-slate-400'
                       )} />
                       
                       {/* Mobile Line */}
-                      <div className="md:hidden absolute left-1/2 -top-12 w-[2px] h-12 bg-slate-700 -translate-x-1/2"></div>
+                      <div className="md:hidden absolute left-1/2 -top-12 w-[1px] h-12 bg-cyan-500/50 -translate-x-1/2"></div>
 
                       <div className={cn(
-                          "p-5 rounded-xl border transition-all cursor-default flex-1 flex flex-col",
+                          "p-5 rounded-lg border transition-all cursor-default flex-1 flex flex-col backdrop-blur-md",
                           // @ts-ignore
-                          sentimentColors[scenario.sentiment] || 'bg-slate-800 border-slate-700',
-                          isHovered ? "shadow-2xl scale-[1.02]" : "bg-slate-800/50"
+                          sentimentColors[scenario.sentiment] || 'tech-card border-slate-800',
+                          isHovered ? "shadow-[0_0_20px_rgba(0,0,0,0.5)] scale-[1.02]" : ""
                       )}>
                           {/* Header */}
-                          <div className="flex items-center justify-between mb-3">
-                              <span className="font-mono text-xs font-bold uppercase opacity-80">{scenario.condition}</span>
-                              <span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-900/30 border border-white/10">
-                                  Case {String.fromCharCode(65 + index)}
+                          <div className="flex items-center justify-between mb-3 border-b border-white/5 pb-2">
+                              <span className="font-mono text-xs font-bold uppercase text-cyan-500 tracking-wider">{scenario.condition}</span>
+                              <span className="text-[10px] px-1.5 py-0.5 rounded bg-black/50 border border-slate-700 font-mono text-slate-400">
+                                  CASE_{String.fromCharCode(65 + index)}
                               </span>
                           </div>
 
