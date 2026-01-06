@@ -7,8 +7,8 @@ export interface PastEvent {
 }
 
 export interface CurrentContext {
-  status: string;
-  description: string;
+  status: { en: string; ko: string };
+  description: { en: string; ko: string };
   sentiment: 'Bullish' | 'Bearish' | 'Neutral' | 'Fear';
 }
 
@@ -73,8 +73,14 @@ export const macroFlowData: MacroFlowData = {
     },
   ],
   currentContext: {
-    status: 'Stagflation Fear',
-    description: 'Market is terrified. Bad news is bad news.',
+    status: {
+      en: 'Stagflation Fear',
+      ko: '스태그플레이션 공포'
+    },
+    description: {
+      en: 'Market is terrified. Bad news is bad news.',
+      ko: '시장이 공포에 질려 있습니다. 나쁜 뉴스가 정말 나쁜 뉴스로 받아들여집니다.'
+    },
     sentiment: 'Fear', 
   },
   upcomingEvent: {

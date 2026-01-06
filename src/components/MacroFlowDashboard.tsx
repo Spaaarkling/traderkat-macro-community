@@ -1,192 +1,125 @@
-import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   AlertTriangle, 
-  Activity, 
-  Calendar,
   ArrowRight,
-  Clock,
-  Lightbulb
+  Info
 } from 'lucide-react';
 import { macroFlowData } from '../data/macroFlowData';
-import { clsx, type ClassValue } from 'clsx';
-import { twMerge } from 'tailwind-merge';
 import { useLanguage } from '../context/LanguageContext';
 
-function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
+import { macroReports, getReport } from '../data/macroReports';
+import type { SignalReport } from '../types/macro';
 
-const sentimentColors = {
-  Bullish: 'text-emerald-400 border-emerald-500 bg-emerald-950/40 hover:bg-emerald-900/60 shadow-[0_0_10px_rgba(52,211,153,0.1)]',
-  Bearish: 'text-rose-500 border-rose-500 bg-rose-950/40 hover:bg-rose-900/60 shadow-[0_0_10px_rgba(244,63,94,0.1)]',
-  Neutral: 'text-slate-400 border-slate-600 bg-slate-900/60 hover:bg-slate-800',
-  Fear: 'text-orange-500 border-orange-500 bg-orange-950/40 hover:bg-orange-900/60 shadow-[0_0_10px_rgba(249,115,22,0.1)]',
-};
-
-const sentimentBorder = {
-  Bullish: 'border-emerald-500',
-  Bearish: 'border-rose-500',
-  Neutral: 'border-slate-600',
-  Fear: 'border-orange-500',
-};
+import SignalOverviewGrid from './SignalOverviewGrid';
+import SignalDetailPanel from './SignalDetailPanel';
+import ExpertPanel from './ExpertPanel';
 
 interface MacroFlowDashboardProps {
   hoveredScenario: string | null;
   setHoveredScenario: (id: string | null) => void;
 }
 
-export default function MacroFlowDashboard({ hoveredScenario, setHoveredScenario }: MacroFlowDashboardProps) {
-  const { currentContext, upcomingEvent } = macroFlowData;
+export default function MacroFlowDashboard({ hoveredScenario: _hoveredScenario, setHoveredScenario: _setHoveredScenario }: MacroFlowDashboardProps) {
+  const { currentContext } = macroFlowData;
   const { t, language } = useLanguage();
+  
+  // State for selected signal
+  const [selectedSignalKey, setSelectedSignalKey] = useState<string | null>("policy");
+  const [selectedReport, setSelectedReport] = useState<SignalReport>(getReport("policy"));
+
+  const handleSelectSignal = (report: SignalReport) => {
+    setSelectedSignalKey(report.key);
+    setSelectedReport(report);
+  };
 
   return (
-    <div className="w-full max-w-5xl flex flex-col md:flex-row items-center md:items-start justify-center gap-6 relative pt-4 pb-8">
+    <div className="w-full max-w-6xl flex flex-col gap-8 relative pt-4 pb-12">
       
-      {/* 1. Context Card (Left) */}
-      <div className="w-full md:w-80 shrink-0 md:sticky md:top-8 z-20">
-         <h2 className="text-slate-500 text-xs font-semibold uppercase tracking-wider mb-2 text-center">{t('dashboard.marketContext')}</h2>
+      {/* 1. Top Section: Regime & Product Copy */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
+         
+         {/* Context/Regime Card */}
          <motion.div 
-           initial={{ scale: 0.9, opacity: 0 }}
-           animate={{ scale: 1, opacity: 1 }}
-           className={cn(
-             "relative p-6 rounded-lg border tech-card shadow-2xl w-full text-center",
-             // @ts-ignore
-             sentimentBorder[currentContext.sentiment] || 'border-slate-800',
-           )}
+           initial={{ opacity: 0, y: -10 }}
+           animate={{ opacity: 1, y: 0 }}
+           className="md:col-span-1 relative p-6 rounded-xl border border-slate-800 bg-slate-900/50 shadow-xl"
          >
-            <div className="flex justify-center mb-2">
-                <AlertTriangle size={24} className="text-orange-500" />
-            </div>
-            <h3 className="text-lg font-bold mb-2 text-white">{currentContext.status}</h3>
-            <p className="text-slate-400 text-xs leading-relaxed">
-                {currentContext.description}
+            <h2 className="text-slate-500 text-xs font-semibold uppercase tracking-wider mb-3 flex items-center gap-2">
+              <AlertTriangle size={14} className="text-orange-500" />
+              {t('dashboard.marketContext')}
+            </h2>
+            <h3 className="text-xl font-bold mb-2 text-white">{currentContext.status[language]}</h3>
+            <p className="text-slate-400 text-sm leading-relaxed">
+                {currentContext.description[language]}
             </p>
+         </motion.div>
+
+         {/* Product Value Props (Copy) */}
+         <motion.div 
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="md:col-span-2 flex flex-col justify-center h-full px-4"
+         >
+            <div className="flex flex-wrap gap-4 md:gap-8">
+              {[
+                { title: t('dashboard.product.whatChanged'), desc: t('dashboard.product.whatChangedDesc') },
+                { title: t('dashboard.product.whyMatters'), desc: t('dashboard.product.whyMattersDesc') },
+                { title: t('dashboard.product.nextChecks'), desc: t('dashboard.product.nextChecksDesc') }
+              ].map((item, i) => (
+                <div key={i} className="flex items-start gap-3">
+                  <div className="p-2 rounded bg-cyan-500/10 border border-cyan-500/20 text-cyan-400">
+                    <Info size={16} />
+                  </div>
+                  <div>
+                    <div className="font-bold text-sm text-slate-200">{item.title}</div>
+                    <div className="text-xs text-slate-500">{item.desc}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
          </motion.div>
       </div>
 
-      {/* Arrow (Desktop) */}
-      <div className="hidden md:flex mt-16 text-slate-600 shrink-0">
-          <ArrowRight size={24} />
+      {/* 2. Middle Section: Signal Grid */}
+      <div className="w-full">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-sm font-bold uppercase tracking-wider text-slate-400">{t('dashboard.signals.matrix')}</h3>
+          <div className="text-xs text-slate-500 font-mono">{t('dashboard.signals.live')}</div>
+        </div>
+        <SignalOverviewGrid 
+          reports={macroReports.filter(r => r.horizon === '1W')} 
+          selectedSignalKey={selectedSignalKey}
+          onSelectSignal={handleSelectSignal}
+        />
       </div>
 
-      {/* 2. Event & Scenarios Column (Right) */}
-      <div className="flex flex-col items-center w-full max-w-[800px]">
-         
-         {/* Upcoming Event */}
-         <div className="w-full max-w-[450px] relative z-20">
-             <div className="tech-card border border-cyan-500/50 rounded-lg p-6 flex items-center gap-5 shadow-[0_0_20px_rgba(6,182,212,0.1)] cursor-default group hover:border-cyan-400 transition-all">
-                <div className="p-3 bg-cyan-500/10 rounded-lg group-hover:scale-110 transition-transform border border-cyan-500/30">
-                    <Calendar className="text-cyan-400" size={24} />
-                </div>
-                <div>
-                    <div className="text-[10px] text-cyan-400 font-bold uppercase tracking-wide flex items-center gap-2 font-mono">
-                        {t('dashboard.upcoming')}
-                        <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full animate-pulse shadow-[0_0_5px_cyan]"></span>
-                    </div>
-                    <div className="text-lg font-bold text-white font-mono tracking-tight">{t('dashboard.data.upcoming.name')}</div>
-                    <div className="text-xs text-slate-400 flex items-center gap-3 mt-0.5 font-mono">
-                        <span className="flex items-center gap-1"><Clock size={10}/> {upcomingEvent.date}</span>
-                        <span className="w-1 h-1 bg-slate-600 rounded-full"></span>
-                        <span>{t('dashboard.consensus')}: <span className="text-cyan-300 font-bold">{t('dashboard.data.upcoming.consensus')}</span></span>
-                    </div>
-                </div>
-             </div>
-         </div>
+      {/* 3. Bottom Section: Deep Dive & Experts */}
+      <AnimatePresence mode="wait">
+        {selectedReport && (
+          <motion.div 
+            key={selectedReport.key}
+            className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start"
+          >
+            {/* Signal Detail (Left - Wider) */}
+            <div className="lg:col-span-7 h-full">
+              <SignalDetailPanel report={selectedReport} />
+            </div>
 
-         {/* Connector SVG */}
-         <div className="w-full h-8 relative hidden md:block z-0 pointer-events-none -mt-1">
-            <svg className="absolute top-0 left-0 w-full h-full drop-shadow-[0_0_5px_rgba(6,182,212,0.5)]" viewBox="0 0 800 32" preserveAspectRatio="none">
-                <path d="M400 0 C 400 16, 133 16, 133 32" stroke="#06b6d4" strokeOpacity="0.6" strokeWidth="1" fill="none" className="animate-pulse" />
-                <path d="M400 0 V 32" stroke="#06b6d4" strokeOpacity="0.6" strokeWidth="1" fill="none" className="animate-pulse" />
-                <path d="M400 0 C 400 16, 666 16, 666 32" stroke="#06b6d4" strokeOpacity="0.6" strokeWidth="1" fill="none" className="animate-pulse" />
-                
-                {/* Active Dots */}
-                <circle cx="400" cy="0" r="2" fill="#22d3ee" className="animate-ping" />
-            </svg>
-         </div>
+            {/* Arrow Connector (Desktop) */}
+            <div className="hidden lg:flex lg:col-span-1 justify-center pt-20 text-slate-700">
+              <ArrowRight size={24} />
+            </div>
 
-         {/* Scenarios Grid */}
-         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 w-full mt-4 md:mt-0">
-            {upcomingEvent.scenarios.map((scenario, index) => {
-              const isHovered = hoveredScenario === scenario.id;
-              const isDimmed = hoveredScenario !== null && hoveredScenario !== scenario.id;
-              
-              return (
-                  <motion.div 
-                      key={scenario.id}
-                      onMouseEnter={() => setHoveredScenario(scenario.id)}
-                      onMouseLeave={() => setHoveredScenario(null)}
-                      className={cn(
-                          "relative transition-all duration-300 flex flex-col h-full",
-                          isDimmed ? "opacity-30 blur-[1px]" : "opacity-100 scale-100"
-                      )}
-                  >
-                      {/* Top Connector Dot (Desktop) */}
-                      <div className={cn("hidden md:block absolute top-[-16px] left-1/2 -translate-x-1/2 w-2 h-2 rounded-full border border-slate-900 z-20 shadow-[0_0_8px_currentColor]", 
-                          // @ts-ignore
-                          scenario.sentiment === 'Bullish' ? 'bg-emerald-400 text-emerald-400' : 
-                          // @ts-ignore
-                          scenario.sentiment === 'Bearish' ? 'bg-rose-500 text-rose-500' : 'bg-slate-400 text-slate-400'
-                      )} />
-                      
-                      {/* Mobile Line */}
-                      <div className="md:hidden absolute left-1/2 -top-12 w-[1px] h-12 bg-cyan-500/50 -translate-x-1/2"></div>
+            {/* Expert Views (Right) */}
+            <div className="lg:col-span-4 h-full">
+               <ExpertPanel expertViews={selectedReport.expertViews} />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-                      <div className={cn(
-                          "p-5 rounded-lg border transition-all cursor-default flex-1 flex flex-col backdrop-blur-md",
-                          // @ts-ignore
-                          sentimentColors[scenario.sentiment] || 'tech-card border-slate-800',
-                          isHovered ? "shadow-[0_0_20px_rgba(0,0,0,0.5)] scale-[1.02]" : ""
-                      )}>
-                          {/* Header */}
-                          <div className="flex items-center justify-between mb-3 border-b border-white/5 pb-2">
-                              <span className="font-mono text-xs font-bold uppercase text-cyan-500 tracking-wider">{scenario.condition}</span>
-                              <span className="text-[10px] px-1.5 py-0.5 rounded bg-black/50 border border-slate-700 font-mono text-slate-400">
-                                  CASE_{String.fromCharCode(65 + index)}
-                              </span>
-                          </div>
-
-                          {/* Summary Headline */}
-                          <div className="font-bold text-lg mb-4 leading-tight min-h-[3rem]">
-                              {scenario.analysis.summary[language]}
-                          </div>
-
-                          {/* Logic Chain */}
-                          <div className="mb-6 space-y-2">
-                              <div className="text-[10px] uppercase tracking-wider opacity-60 font-bold flex items-center gap-1.5">
-                                  <Activity size={10} /> Logic Chain
-                              </div>
-                              <div className="flex flex-wrap items-center gap-2 text-xs opacity-90">
-                                  {scenario.analysis.logicChain[language].map((step, i) => (
-                                      <div key={i} className="flex items-center gap-2">
-                                          {i > 0 && <ArrowRight size={10} className="opacity-50" />}
-                                          <span className="bg-slate-900/30 px-2 py-1 rounded border border-white/5 whitespace-nowrap shadow-sm">
-                                              {step}
-                                          </span>
-                                      </div>
-                                  ))}
-                              </div>
-                          </div>
-
-                          {/* Deep Dive / Analyst View */}
-                          <div className="mt-auto pt-4 border-t border-white/10">
-                              <div className="flex items-center gap-2 mb-2">
-                                  <Lightbulb size={14} className="text-yellow-400" />
-                                  <span className="text-xs font-bold text-yellow-400/90">
-                                      {language === 'ko' ? '친절한 해설' : "Analyst's Note"}
-                                  </span>
-                              </div>
-                              <p className="text-xs leading-relaxed opacity-80 font-medium">
-                                  {scenario.analysis.deepDive[language]}
-                              </p>
-                          </div>
-                      </div>
-                  </motion.div>
-              );
-            })}
-         </div>
-
-      </div>
     </div>
   );
 }
