@@ -18,16 +18,16 @@ function App() {
   const currentProbability = activeScenario?.rateProbability ?? 65;
 
   return (
-    <div className="flex h-screen bg-slate-900 overflow-hidden">
+    <div className="flex h-screen overflow-hidden">
       
       {/* Left Container (Main Content) */}
-      <div className="flex-1 flex flex-col h-full overflow-y-auto relative bg-slate-900 scrollbar-thin scrollbar-thumb-slate-700">
+      <div className="flex-1 flex flex-col h-full overflow-y-auto relative scrollbar-thin scrollbar-thumb-slate-700">
         
         {/* Top Controls (Mobile Menu & Language) */}
         <div className="absolute top-4 right-4 z-30 flex items-center gap-3">
           <button 
             onClick={() => setLanguage(language === 'en' ? 'ko' : 'en')}
-            className="bg-slate-800/80 backdrop-blur text-slate-300 px-3 py-1.5 rounded-full border border-slate-700 text-xs font-bold hover:bg-slate-700 transition-colors flex items-center gap-2 shadow-lg"
+            className="glass text-slate-300 px-3 py-1.5 rounded-full text-xs font-bold hover:bg-white/10 transition-colors flex items-center gap-2"
           >
             <Globe size={14} />
             {language === 'en' ? 'KO' : 'EN'}
@@ -52,7 +52,7 @@ function App() {
       </div>
 
       {/* Right Container (Sidebar - Fixed Width) */}
-      <div className="hidden lg:block w-[320px] flex-shrink-0 border-l border-slate-700 bg-slate-900 h-full z-20">
+      <div className="hidden lg:block w-[320px] flex-shrink-0 glass border-y-0 border-r-0 h-full z-20">
          <RightPanel probability={currentProbability} />
       </div>
 

@@ -38,38 +38,38 @@ export default function HistoricalTimeline() {
   // Helper to determine badge color
   const getResultColor = (result: string) => {
     const r = result.toLowerCase();
-    if (r.includes('beat') || r.includes('good')) return 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30';
-    if (r.includes('miss') || r.includes('bad') || r.includes('shock')) return 'bg-rose-500/20 text-rose-400 border-rose-500/30';
-    if (r.includes('pending')) return 'bg-slate-700/50 text-slate-400 border-slate-600';
-    return 'bg-slate-500/20 text-slate-400 border-slate-500/30';
+    if (r.includes('beat') || r.includes('good')) return 'bg-emerald-950 text-emerald-400 border-emerald-500 shadow-[0_0_5px_rgba(52,211,153,0.3)]';
+    if (r.includes('miss') || r.includes('bad') || r.includes('shock')) return 'bg-rose-950 text-rose-500 border-rose-500 shadow-[0_0_5px_rgba(244,63,94,0.3)]';
+    if (r.includes('pending')) return 'bg-slate-900 text-slate-500 border-slate-700 border-dashed';
+    return 'bg-slate-900 text-slate-400 border-slate-600';
   };
 
   // Helper for BTC Impact Color
   const getImpactColor = (impact: string) => {
-    if (impact.includes('+')) return 'text-emerald-400';
-    if (impact.includes('-')) return 'text-rose-400';
-    return 'text-slate-400';
+    if (impact.includes('+')) return 'text-emerald-400 drop-shadow-[0_0_3px_rgba(52,211,153,0.5)]';
+    if (impact.includes('-')) return 'text-rose-500 drop-shadow-[0_0_3px_rgba(244,63,94,0.5)]';
+    return 'text-slate-500';
   };
 
   return (
-    <div className="w-full bg-slate-800 rounded-xl border border-slate-700 overflow-hidden shadow-2xl">
+    <div className="w-full tech-card rounded-lg overflow-hidden shadow-2xl border-t-2 border-t-cyan-500/50">
       {/* Header & Filter */}
-      <div className="p-4 border-b border-slate-700 bg-slate-900/50 flex flex-col sm:flex-row justify-between items-center gap-4 sticky top-0 z-20 backdrop-blur-md">
+      <div className="p-4 border-b border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4 sticky top-0 z-20 backdrop-blur-md bg-black/80">
         <div className="flex items-center gap-3">
-          <Clock className="text-blue-500" size={20} />
-          <h3 className="font-bold text-lg text-white">{t('timeline.title')}</h3>
+          <Clock className="text-cyan-500" size={20} />
+          <h3 className="font-bold text-lg text-white font-mono tracking-tight">{t('timeline.title')}</h3>
         </div>
         
-        <div className="flex bg-slate-900 rounded-lg p-1 border border-slate-700">
+        <div className="flex bg-black rounded-sm p-1 border border-slate-800">
           {(['All', '2025', '2024'] as const).map((year) => (
             <button
               key={year}
               onClick={() => setYearFilter(year)}
               className={cn(
-                "px-4 py-1.5 rounded-md text-xs font-bold transition-all",
+                "px-4 py-1.5 rounded-sm text-xs font-bold transition-all font-mono",
                 yearFilter === year 
-                  ? "bg-blue-600 text-white shadow-lg" 
-                  : "text-slate-400 hover:text-white hover:bg-slate-800"
+                  ? "bg-cyan-900/50 text-cyan-400 border border-cyan-500/50 shadow-[0_0_10px_rgba(6,182,212,0.2)]" 
+                  : "text-slate-500 hover:text-white hover:bg-slate-900"
               )}
             >
               {year === 'All' ? t('timeline.filterAll') : year}
@@ -79,14 +79,14 @@ export default function HistoricalTimeline() {
       </div>
 
       {/* List Area */}
-      <div className="max-h-[600px] overflow-y-auto p-0 scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-transparent">
+      <div className="max-h-[600px] overflow-y-auto p-0 scrollbar-thin scrollbar-thumb-slate-800 scrollbar-track-transparent">
         {Object.keys(groupedData).length === 0 ? (
-          <div className="p-8 text-center text-slate-500">No data found for this period.</div>
+          <div className="p-8 text-center text-slate-500 font-mono">NO_DATA_FOUND</div>
         ) : (
           Object.entries(groupedData).map(([monthYear, events]) => (
             <div key={monthYear} className="mb-0">
-              <div className="sticky top-0 z-10 bg-slate-800/95 backdrop-blur py-2 px-4 border-y border-slate-700/50 shadow-sm">
-                <h4 className="text-xs font-bold uppercase tracking-widest text-slate-500">{monthYear}</h4>
+              <div className="sticky top-0 z-10 bg-black/90 backdrop-blur py-2 px-4 border-y border-slate-800 shadow-sm">
+                <h4 className="text-xs font-bold uppercase tracking-widest text-cyan-500 font-mono">{monthYear}</h4>
               </div>
               
               <div>
@@ -99,8 +99,8 @@ export default function HistoricalTimeline() {
                     <div 
                       key={uniqueId}
                       className={cn(
-                        "border-b border-slate-700/30 last:border-0 transition-colors",
-                        isPending ? "opacity-50" : "hover:bg-slate-700/20 cursor-pointer"
+                        "border-b border-slate-800 last:border-0 transition-colors",
+                        isPending ? "opacity-50" : "hover:bg-cyan-900/10 cursor-pointer"
                       )}
                       onClick={() => !isPending && setExpandedId(isExpanded ? null : uniqueId)}
                     >
@@ -108,16 +108,16 @@ export default function HistoricalTimeline() {
                       <div className="flex items-center justify-between p-4 py-3">
                         {/* Left: Date & Event */}
                         <div className="flex items-center gap-4 flex-1 min-w-0">
-                          <div className="flex flex-col items-center justify-center w-10 shrink-0">
-                            <span className="text-xs font-bold text-slate-500">{event.date.split('-')[2]}</span>
+                          <div className="flex flex-col items-center justify-center w-10 shrink-0 font-mono">
+                            <span className="text-xs font-bold text-slate-400">{event.date.split('-')[2]}</span>
                             <span className="text-[10px] text-slate-600 uppercase">{new Date(event.date).toLocaleString('en-US', { weekday: 'short' })}</span>
                           </div>
                           <div className="min-w-0">
-                            <div className="font-bold text-slate-200 text-sm truncate pr-2">{event.event}</div>
+                            <div className="font-bold text-slate-200 text-sm truncate pr-2 font-mono tracking-tight">{event.event}</div>
                             <div className="flex items-center gap-2 mt-0.5">
                                {/* Result Badge */}
                                <span className={cn(
-                                 "text-[10px] px-1.5 py-0.5 rounded border font-mono font-bold uppercase",
+                                 "text-[10px] px-1.5 py-0.5 rounded-sm border font-mono font-bold uppercase",
                                  getResultColor(event.result)
                                )}>
                                  {event.result}
@@ -166,25 +166,25 @@ export default function HistoricalTimeline() {
                             initial={{ height: 0, opacity: 0 }}
                             animate={{ height: 'auto', opacity: 1 }}
                             exit={{ height: 0, opacity: 0 }}
-                            className="overflow-hidden bg-slate-900/30"
+                            className="overflow-hidden bg-black/40 border-b border-slate-800"
                           >
                             <div className="p-4 pt-2 pl-16 flex flex-col gap-3 pb-6">
                                {event.note && (
-                                 <div className="bg-slate-800/50 p-3 rounded-lg border border-slate-700/50">
-                                   <div className="text-[10px] uppercase font-bold text-slate-500 flex items-center gap-1.5 mb-1.5">
+                                 <div className="bg-slate-900/50 p-3 rounded-sm border border-slate-800">
+                                   <div className="text-[10px] uppercase font-bold text-slate-500 flex items-center gap-1.5 mb-1.5 font-mono">
                                      <span>🗣️</span> {t('timeline.noteLabel')}
                                    </div>
-                                   <p className="text-sm text-slate-300 leading-relaxed">{event.note}</p>
+                                   <p className="text-sm text-slate-300 leading-relaxed font-mono">{event.note}</p>
                                  </div>
                                )}
                                
                                <div className="flex items-center gap-2 text-xs font-mono px-1">
                                   <span className="text-slate-500 uppercase font-bold">{t('timeline.impactLevel')}:</span>
                                   <span className={cn(
-                                    "px-2 py-0.5 rounded border text-[10px]", 
+                                    "px-2 py-0.5 rounded-sm border text-[10px]", 
                                     event.impactLevel === 'High' || event.impactLevel === 'Extreme' 
-                                      ? "bg-rose-500/10 text-rose-400 border-rose-500/20" 
-                                      : "bg-slate-700/50 text-slate-300 border-slate-600"
+                                      ? "bg-rose-950 text-rose-500 border-rose-500 shadow-[0_0_5px_rgba(244,63,94,0.3)]" 
+                                      : "bg-slate-900 text-slate-400 border-slate-700"
                                   )}>{event.impactLevel}</span>
                                </div>
                             </div>

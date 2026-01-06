@@ -19,7 +19,7 @@ export default function PredictionWidget() {
       label: t('dashboard.voting.optionHigh'),
       percent: 25,
       color: 'bg-rose-500',
-      hoverColor: 'hover:bg-rose-500/20 hover:border-rose-500',
+      hoverColor: 'hover:bg-rose-900/50 hover:border-rose-500',
       borderColor: 'border-rose-500',
       textColor: 'text-rose-500'
     },
@@ -27,8 +27,8 @@ export default function PredictionWidget() {
       id: 'match',
       label: t('dashboard.voting.optionMatch'),
       percent: 30,
-      color: 'bg-slate-400',
-      hoverColor: 'hover:bg-slate-400/20 hover:border-slate-400',
+      color: 'bg-slate-600',
+      hoverColor: 'hover:bg-slate-800 hover:border-slate-400',
       borderColor: 'border-slate-400',
       textColor: 'text-slate-400'
     },
@@ -37,9 +37,9 @@ export default function PredictionWidget() {
       label: t('dashboard.voting.optionLow'),
       percent: 45,
       color: 'bg-emerald-500',
-      hoverColor: 'hover:bg-emerald-500/20 hover:border-emerald-500',
+      hoverColor: 'hover:bg-emerald-900/50 hover:border-emerald-500',
       borderColor: 'border-emerald-500',
-      textColor: 'text-emerald-500'
+      textColor: 'text-emerald-400'
     }
   ];
 
@@ -49,9 +49,9 @@ export default function PredictionWidget() {
   };
 
   return (
-    <div className="w-full bg-slate-800/80 backdrop-blur border border-slate-700 rounded-xl p-5 shadow-lg relative overflow-hidden">
+    <div className="w-full tech-card rounded-lg p-5 shadow-lg relative overflow-hidden">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-sm font-bold text-slate-300 uppercase tracking-wider">
+        <h3 className="text-sm font-bold text-cyan-500 uppercase tracking-wider font-mono">
           {t('dashboard.voting.title')}
         </h3>
         {hasVoted && (
@@ -69,7 +69,7 @@ export default function PredictionWidget() {
               <button
                 onClick={() => handleVote(option.id)}
                 className={cn(
-                  "w-full py-3 px-4 rounded-lg border-2 border-slate-700 bg-slate-900/50 transition-all duration-300 text-left font-bold text-slate-300",
+                  "w-full py-3 px-4 rounded-sm border border-slate-700 bg-black/40 transition-all duration-300 text-left font-bold font-mono text-slate-300 hover:text-white",
                   option.hoverColor,
                   "group relative overflow-hidden"
                 )}
@@ -81,8 +81,8 @@ export default function PredictionWidget() {
             ) : (
               // Results Mode Bars
               <div className={cn(
-                "relative w-full h-12 rounded-lg bg-slate-900/50 border border-slate-800 overflow-hidden flex items-center px-4",
-                selectedOption === option.id ? `ring-1 ring-offset-1 ring-offset-slate-900 ${option.borderColor}` : "opacity-80"
+                "relative w-full h-12 rounded-sm bg-black/50 border border-slate-800 overflow-hidden flex items-center px-4",
+                selectedOption === option.id ? `border-l-4 ${option.borderColor}` : "opacity-60"
               )}>
                 {/* Background Bar Animation */}
                 <motion.div

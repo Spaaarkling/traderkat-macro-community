@@ -5,6 +5,14 @@ export const translations = {
       pastEvents: "Past Events",
       currentContext: "Current Context",
       marketContext: "Market Context",
+      product: {
+        whatChanged: "What Changed",
+        whatChangedDesc: "Weekly shift detection",
+        whyMatters: "Why it Matters",
+        whyMattersDesc: "Impact on your portfolio",
+        nextChecks: "Next Checks",
+        nextChecksDesc: "Actionable look-ahead"
+      },
       triggers: "Triggers",
       upcoming: "Upcoming Event",
       scenarios: "Scenarios",
@@ -24,6 +32,46 @@ export const translations = {
         cut: "Cut",
         probability: "Cut Prob.",
         insight: "Fed's Goal: 4.6% vs Market: 4.0%"
+      },
+      signals: {
+        matrix: "Macro Signals Matrix",
+        live: "Live Monitoring",
+        conf: "Conf",
+        experts: "Experts",
+        consensus: "Consensus",
+        titles: {
+          policy: "Monetary Policy",
+          liquidity: "Global Liquidity",
+          inflation: "Inflation Outlook",
+          growth: "Economic Growth",
+          risk: "Risk Sentiment"
+        },
+        states: {
+          bullish: "Bullish",
+          bearish: "Bearish",
+          neutral: "Neutral"
+        }
+      },
+      detail: {
+        deepDive: "Deep Dive",
+        expertConsensus: "Expert Consensus",
+        topDrivers: "Top Drivers",
+        whatChanged: "What Changed",
+        whatWouldChangeMind: "What would change our mind",
+        nextChecks: "Next Checks"
+      },
+      expert: {
+        viewpoint: "Expert Viewpoint",
+        keyDrivers: "Key Drivers",
+        whatWouldChangeMind: "What would change my mind",
+        nextChecks: "Next Checks",
+        roles: {
+          macroeconomist: "Macro",
+          rates: "Rates",
+          fx: "FX",
+          risk: "Risk",
+          crypto: "Crypto"
+        }
       },
       logic: {
         label: "Why?",
@@ -73,6 +121,14 @@ export const translations = {
       pastEvents: "지난 지표",
       currentContext: "현재 시장 상황",
       marketContext: "시장 컨텍스트",
+      product: {
+        whatChanged: "변경된 점",
+        whatChangedDesc: "주간 변화 감지",
+        whyMatters: "중요한 이유",
+        whyMattersDesc: "포트폴리오 영향 분석",
+        nextChecks: "다음 체크 포인트",
+        nextChecksDesc: "향후 전망 및 대응"
+      },
       triggers: "트리거",
       upcoming: "다가올 지표",
       scenarios: "시나리오 분석",
@@ -92,6 +148,46 @@ export const translations = {
         cut: "인하",
         probability: "인하 확률",
         insight: "연준 목표: 4.6% vs 시장: 4.0%"
+      },
+      signals: {
+        matrix: "매크로 시그널 매트릭스",
+        live: "실시간 모니터링",
+        conf: "신뢰도",
+        experts: "전문가",
+        consensus: "컨센서스",
+        titles: {
+          policy: "통화 정책",
+          liquidity: "글로벌 유동성",
+          inflation: "인플레이션 전망",
+          growth: "경제 성장",
+          risk: "리스크 심리"
+        },
+        states: {
+          bullish: "강세 (Bullish)",
+          bearish: "약세 (Bearish)",
+          neutral: "중립 (Neutral)"
+        }
+      },
+      detail: {
+        deepDive: "심층 분석",
+        expertConsensus: "전문가 컨센서스",
+        topDrivers: "주요 동인",
+        whatChanged: "변경된 점",
+        whatWouldChangeMind: "관점 변경 요인",
+        nextChecks: "다음 체크 포인트"
+      },
+      expert: {
+        viewpoint: "전문가 의견",
+        keyDrivers: "핵심 동인",
+        whatWouldChangeMind: "내 생각이 바뀔 수 있는 조건",
+        nextChecks: "다음 체크 포인트",
+        roles: {
+          macroeconomist: "거시경제",
+          rates: "금리",
+          fx: "환율",
+          risk: "리스크",
+          crypto: "크립토"
+        }
       },
       logic: {
         label: "이유가 뭔가요?",
